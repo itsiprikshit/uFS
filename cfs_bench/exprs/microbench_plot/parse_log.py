@@ -388,7 +388,7 @@ def process_one_expr_dir(dir_name,
     return app_summary_df, fsp_out_df, cpu_ut_out
 
 
-def gen_csv_for_dir(fstype, dirname, rno, cpu_ut, jobs, sz_list):
+def gen_csv_for_dir(fstype, dirname, rno, cpu_ut, jobs, sz_list, numapp):
     if jobs is None:
         jobs = get_default_benchmarks()
     else:
@@ -401,7 +401,7 @@ def gen_csv_for_dir(fstype, dirname, rno, cpu_ut, jobs, sz_list):
     fs_prefix = fstype
     if fs_prefix.endswith("nj"):
         fs_prefix = fs_prefix[:-2]
-    app_num_list = range(1, get_max_num_app() + 1)
+    app_num_list = range(1, (numapp or get_max_num_app()) + 1)
     for job in jobs:
         for sz in sz_list:
             cur_expr_dir = f"{dirname}/{fs_prefix}_{job}_run_{rno}"
@@ -477,7 +477,7 @@ def gen_csv_for_dir(fstype, dirname, rno, cpu_ut, jobs, sz_list):
 def main(args, loglevel):
     logging.basicConfig(format="%(levelname)s: %(message)s", level=loglevel)
     gen_csv_for_dir(args.fs, args.dir, args.rno, args.cpu_ut, args.jobs,
-                    args.sz)
+                    args.sz, args.numapp)
 
 
 def parse_cmd_args():
@@ -501,10 +501,14 @@ def parse_cmd_args():
     parser.add_argument('--sz',
                         help='which specific size to process',
                         default=None)
+    parser.add_argument('--numapp', type=int, default=0, required=True,
+                        help='number of applications (max - 10)')
     return (parser.parse_args())
 
 
 if __name__ == '__main__':
     loglevel = logging.DEBUG
     args = parse_cmd_args()
+    print("printing parse log args...")
+    print(args)
     main(args, loglevel)

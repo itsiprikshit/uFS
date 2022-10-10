@@ -366,6 +366,7 @@ class Benchmark(object):
     def run(self):
         # divide the benchmarks into two, and one needs prep data, the other
         # does not
+        # try to run the benchmarks that don't need any prep
         need_data_prep_list = []
         no_data_prep_list = []
         for bench in self.benchmarks:
@@ -441,8 +442,8 @@ def parse_cmd_args():
                         help='readahead size in bytes')
     parser.add_argument('--nodalloc', action='store_true',
                         help='disable delayed allocation')
-    parser.add_argument('--numapp', type=int, default=1,
-                        help='number of applications (max)')
+    parser.add_argument('--numapp', type=int, default=0, required=True,
+                        help='number of applications (max - 10)')
     parser.add_argument('--nomount', action='store_true',
                         help='will not mount device')
     parser.add_argument('--single', action='store_true',
@@ -460,4 +461,5 @@ def parse_cmd_args():
 if __name__ == '__main__':
     loglevel = logging.INFO
     args = parse_cmd_args()
+    print(args)
     main(args, loglevel)

@@ -17,7 +17,7 @@ function print_usage_and_exit() {
 	exit 1
 }
 
-if [ ! $# = "1" ]; then print_usage_and_exit; fi
+# if [ ! $# = "2" ]; then print_usage_and_exit; fi
 if [ ! "$1" = "single" ] && [ ! "$1" = "multi" ]; then print_usage_and_exit; fi
 
 source "$AE_SCRIPT_DIR/common.sh"
@@ -30,15 +30,15 @@ if [ "$1" = "single" ]; then # Please make sure this ufs is compiled with nj
 	test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ext4nj
 
 	# parse output and generate CSV
-	python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs fsp --dir $AE_DATA_DIR/DATA_microbench_ufs-single
-	python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs ext4nj --dir $AE_DATA_DIR/DATA_microbench_ext4nj
+	python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs fsp --dir $AE_DATA_DIR/DATA_microbench_ufs-single "${@:2}"
+	python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs ext4nj --dir $AE_DATA_DIR/DATA_microbench_ext4nj "${@:2}"
 	python3 "$MICROBENCH_PLOT_DIR/plot_ufs_ext4_cmp.py" "microbench_single" "uFSnj:$AE_DATA_DIR/DATA_microbench_ufs-single" "ext4nj:$AE_DATA_DIR/DATA_microbench_ext4nj"
 elif [ "$1" = "multi" ]; then
 	# test data dir exist
 	test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ufs
 	test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ext4
 
-	python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs fsp --dir $AE_DATA_DIR/DATA_microbench_ufs
-	python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs ext4 --dir $AE_DATA_DIR/DATA_microbench_ext4
+	python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs fsp --dir $AE_DATA_DIR/DATA_microbench_ufs "${@:2}"
+	python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs ext4 --dir $AE_DATA_DIR/DATA_microbench_ext4 "${@:2}"
 	python3 "$MICROBENCH_PLOT_DIR/plot_ufs_ext4_cmp.py" "microbench_multi" "uFS:$AE_DATA_DIR/DATA_microbench_ufs" "ext4:$AE_DATA_DIR/DATA_microbench_ext4"
 fi
