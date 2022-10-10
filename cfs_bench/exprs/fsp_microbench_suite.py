@@ -442,7 +442,7 @@ def parse_cmd_args():
                         help='readahead size in bytes')
     parser.add_argument('--nodalloc', action='store_true',
                         help='disable delayed allocation')
-    parser.add_argument('--numapp', type=int, default=0, required=True,
+    parser.add_argument('--numapp', type=int, default=0,
                         help='number of applications (max - 10)')
     parser.add_argument('--nomount', action='store_true',
                         help='will not mount device')
