@@ -7,7 +7,7 @@ from zplot import *
 import pandas as pd
 from numerize import numerize
 import sys
-
+import argparse
 
 def print_usage_and_exit():
     print(f'Usage: {sys.argv[0]} <plot_name> <ufs_data> <ext4_data> [ext4-nora_data]')
@@ -19,8 +19,8 @@ def print_usage_and_exit():
     exit(1)
 
 
-if len(sys.argv) != 4 and len(sys.argv) != 5:
-    print_usage_and_exit()
+# if len(sys.argv) != 4 and len(sys.argv) != 5:
+#     print_usage_and_exit()
 
 plot_name = sys.argv[1]
 for arg in sys.argv[2:]:
@@ -32,6 +32,26 @@ fs_name_dict = {}
 
 ufs_name, ufs_dir = sys.argv[2].split(":", 1)
 ext4_name, ext4_dir = sys.argv[3].split(":", 1)
+
+parser = argparse.ArgumentParser(description="Parse FSP microbenchmark compare")
+parser.add_argument('plot_name',
+    help='name of the plot',
+    default=None)
+parser.add_argument('ufs_data',
+    help='ufs data argument',
+    default=None)
+parser.add_argument('ext4_data',
+    help='ext4 data argument',
+    default=None)
+parser.add_argument('--numapp',
+    help='num apps',
+    default=None)
+parser.add_argument('--jobs',
+    help='which specific benchmarks to compare',
+    default=None)
+args = parser.parse_args()
+print("compare args...")
+print(args)
 
 fs_name_dict["ufs"] = ufs_name
 fs_name_dict["ext4"] = ext4_name
@@ -207,8 +227,11 @@ legend_dict = {fs: legend() for fs in fs_type_list}
 for fs_job in color_dict.keys():
     legend_dict[fs_job] = legend()
 
-jobs = get_default_benchmarks()
-assert (len(jobs) == num_horiz * num_vert)
+if args.jobs:
+    jobs = args.jobs.split(",")
+else:
+    jobs = get_default_benchmarks()
+# assert (len(jobs) == num_horiz * num_vert)
 pic_idx = 0
 tc_dict = {}
 drawable_map = {}
