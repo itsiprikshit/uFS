@@ -25,20 +25,20 @@ source "$AE_SCRIPT_DIR/common.sh"
 MICROBENCH_PLOT_DIR=$AE_REPO_DIR/cfs_bench/exprs/microbench_plot
 
 if [ "$1" = "single" ]; then # Please make sure this ufs is compiled with nj
-	# test data dir exist
-	test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ufs-single
-	test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ext4nj
-
 	# parse output and generate CSV
     if [ "$2" == "both" ]; then
+        test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ufs-single
+        test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ext4nj
         python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs fsp --dir $AE_DATA_DIR/DATA_microbench_ufs-single "${@:4}"
         python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs ext4nj --dir $AE_DATA_DIR/DATA_microbench_ext4nj "${@:4}"
     else
         if [ "$2" == "ufs-single" ]; then
+            test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ufs-single
             python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs fsp --dir $AE_DATA_DIR/DATA_microbench_ufs-single "${@:4}"
         fi
 
         if [ "$2" == "ext4nj" ]; then
+            test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ext4nj
             python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs ext4nj --dir $AE_DATA_DIR/DATA_microbench_ext4nj "${@:4}"
         fi
     fi
@@ -47,19 +47,19 @@ if [ "$1" = "single" ]; then # Please make sure this ufs is compiled with nj
 	    python3 "$MICROBENCH_PLOT_DIR/plot_ufs_ext4_cmp.py" "microbench_single" "uFSnj:$AE_DATA_DIR/DATA_microbench_ufs-single" "ext4nj:$AE_DATA_DIR/DATA_microbench_ext4nj" "${@:4}"
     fi
 elif [ "$1" = "multi" ]; then
-	# test data dir exist
-	test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ufs
-	test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ext4
-
     if [ "$2" == "both" ]; then
+        test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ufs
+        test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ext4
         python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs fsp --dir $AE_DATA_DIR/DATA_microbench_ufs "${@:4}"
         python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs ext4 --dir $AE_DATA_DIR/DATA_microbench_ext4 "${@:4}"
     else
         if [ "$2" == "ufs" ]; then
+            test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ufs
             python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs fsp --dir $AE_DATA_DIR/DATA_microbench_ufs "${@:4}"
         fi
 
         if [ "$2" == "ext4" ]; then
+            test-data-dir-exist $AE_DATA_DIR/DATA_microbench_ext4
             python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs ext4 --dir $AE_DATA_DIR/DATA_microbench_ext4 "${@:4}"
         fi
     fi
