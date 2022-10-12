@@ -34,11 +34,11 @@ if [ "$1" = "single" ]; then # Please make sure this ufs is compiled with nj
         python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs fsp --dir $AE_DATA_DIR/DATA_microbench_ufs-single "${@:4}"
         python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs ext4nj --dir $AE_DATA_DIR/DATA_microbench_ext4nj "${@:4}"
     else
-        if [ "$2" == "ufs" ]; then
+        if [ "$2" == "ufs-single" ]; then
             python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs fsp --dir $AE_DATA_DIR/DATA_microbench_ufs-single "${@:4}"
         fi
 
-        if [ "$2" == "ext4" ]; then
+        if [ "$2" == "ext4nj" ]; then
             python3 "$MICROBENCH_PLOT_DIR/parse_log.py" --fs ext4nj --dir $AE_DATA_DIR/DATA_microbench_ext4nj "${@:4}"
         fi
     fi
